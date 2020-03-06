@@ -1,0 +1,22 @@
+{
+  "npmScope": "kvn",
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "kvn-game": {
+      "tags": []
+    },
+    "kvn-game-e2e": {
+      "tags": [],
+      "implicitDependencies": ["kvn-game"]
+    }
+  }
+}
