@@ -2,46 +2,55 @@
  * Remove template code below
  */
 
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  position: fixed;
+
+  #__next {
+    height: 100%;
+  }
+}
+
 .app {
+  height: 100%;
   font-family: sans-serif;
-  min-width: 300px;
-  max-width: 600px;
-  margin: 50px auto;
-}
+  display: grid;
+  grid-template-columns: auto 15rem;
+  grid-template-rows: 10rem calc(100% - 10rem);
+  grid-template-areas:
+    'header header'
+    'main sidebar';
 
-.app .gutter-left {
-  margin-left: 9px;
-}
+  header {
+    background-color: #143055;
+    color: white;
+    grid-area: header;
+  }
 
-.app .col-span-2 {
-  grid-column: span 2;
-}
+  p {
+    text-align: center;
+  }
 
-.app .flex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  h1 {
+    text-align: center;
+    margin-left: 18px;
+    font-size: 24px;
+  }
 
-.app header {
-  background-color: #143055;
-  color: white;
-  padding: 5px;
-  border-radius: 3px;
-}
+  h2 {
+    text-align: center;
+    font-size: 20px;
+    margin: 40px 0 10px 0;
+  }
 
-.app p {
-  text-align: center;
-}
-
-.app h1 {
-  text-align: center;
-  margin-left: 18px;
-  font-size: 24px;
-}
-
-.app h2 {
-  text-align: center;
-  font-size: 20px;
-  margin: 40px 0 10px 0;
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './kvn-game-canvas.component.scss';
+
 function KvnGameCanvasComponent() {
   const mainCanvas = React.useRef(null);
 

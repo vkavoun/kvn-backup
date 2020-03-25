@@ -1,0 +1,8 @@
+main {
+  grid-area: main;
+
+  &.prod {
+    grid-area: auto;
+    grid-column: 1 / 3;
+  }
+}
