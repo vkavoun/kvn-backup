@@ -1,6 +1,11 @@
 import React from 'react';
-import KvnGameCanvasComponent from '../component/kvn-game-canvas/kvn-game-canvas.component';
+import dynamic from 'next/dynamic';
 import KvnDevControlsComponent from '../component/kvn-dev-controls/kvn-dev-controls.component';
+
+const KvnGameStageComponent = dynamic(
+  import('../component/kvn-game-stage/kvn-game-stage.component'),
+  { ssr: false }
+);
 
 import { environment } from '../environments/environment';
 
@@ -19,7 +24,7 @@ function KvnGameContainer() {
           environment.production ? 'prod' : 'dev'
         }`}
       >
-        <KvnGameCanvasComponent></KvnGameCanvasComponent>
+        <KvnGameStageComponent></KvnGameStageComponent>
       </main>
       {!environment.production && (
         <KvnDevControlsComponent></KvnDevControlsComponent>
