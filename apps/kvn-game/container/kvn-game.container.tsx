@@ -1,6 +1,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import KvnDevControlsComponent from '../component/kvn-dev-controls/kvn-dev-controls.component';
+import EventManager from '../events/eventManager';
+import * as Event from '../events/events';
 
 const KvnGameStageComponent = dynamic(
   import('../component/kvn-game-stage/kvn-game-stage.component'),
@@ -12,6 +14,12 @@ import { environment } from '../environments/environment';
 import './kvn-game.container.scss';
 
 function KvnGameContainer() {
+  const eventManager = EventManager.getInstance();
+
+  const handleResetClick = () => {
+    eventManager.dispatch(Event.RESET);
+  };
+
   return (
     <>
       <header className="flex">
@@ -27,7 +35,9 @@ function KvnGameContainer() {
         <KvnGameStageComponent></KvnGameStageComponent>
       </main>
       {!environment.production && (
-        <KvnDevControlsComponent></KvnDevControlsComponent>
+        <KvnDevControlsComponent
+          handleResetClick={handleResetClick}
+        ></KvnDevControlsComponent>
       )}
     </>
   );

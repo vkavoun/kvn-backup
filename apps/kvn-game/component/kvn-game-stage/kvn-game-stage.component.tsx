@@ -1,10 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 import * as PIXI from 'pixi.js';
+import EventManager from '../../events/eventManager';
+import * as Event from '../../events/events';
 
 import './kvn-game-stage.component.scss';
 
 function KvnGameStageComponent() {
   const mainStage = useRef(null);
+  const eventManager = EventManager.getInstance();
+
+  eventManager.addEventListener(Event.RESET, () => {
+    console.log('reset event');
+  });
 
   useEffect(() => {
     const app = new PIXI.Application({
