@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import * as PIXI from 'pixi.js';
 import EventManager from '../../events/eventManager';
 import * as Event from '../../events/events';
+import { drawGrid } from '../../graphics/geometry';
 
 import './kvn-game-stage.component.scss';
 
@@ -9,18 +10,25 @@ function KvnGameStageComponent() {
   const mainStage = useRef(null);
   const eventManager = EventManager.getInstance();
 
+  let gridContainer = null;
+  let bubbleContainer = null;
+  const cellCount = 7;
+  const padding = 20;
+  let cellWidth = 0;
+  let gridSize = 0;
+
+  let app = null;
+
   eventManager.addEventListener(Event.RESET, () => {
     console.log('reset event');
   });
 
-  useEffect(() => {
-    const app = new PIXI.Application({
-      width: mainStage.current.clientWidth,
-      height: mainStage.current.clientHeight,
-      backgroundColor: 0x000000,
-      resolution: 1
-    });
-    mainStage.current.appendChild(app.view);
+  const initGameConstants = () => {
+    cellWidth = (mainStage.current.clientWidth - padding) / cellCount;
+    gridSize = cellCount * cellWidth;
+  };
+
+  const drawItems = () => {
     const container = new PIXI.Container();
 
     app.stage.addChild(container);
@@ -51,6 +59,31 @@ function KvnGameStageComponent() {
       // use delta to create frame-independent transform
       container.rotation -= 0.01 * delta;
     });
+  };
+
+  useEffect(() => {
+    app = new PIXI.Application({
+      width: mainStage.current.clientWidth,
+      height: mainStage.current.clientHeight,
+      backgroundColor: 0x000000,
+      resolution: 1,
+      antialias: true
+    });
+    mainStage.current.appendChild(app.view);
+
+    initGameConstants();
+
+    gridContainer = drawGrid({
+      cellWidth,
+      gridSize
+    });
+
+    gridContainer.x = (app.screen.width - gridSize) / 2;
+    gridContainer.y = (app.screen.height - gridSize) / 2;
+
+    
+
+    app.stage.addChild(gridContainer);
     // return () => {
     //   cleanup;
     // };
