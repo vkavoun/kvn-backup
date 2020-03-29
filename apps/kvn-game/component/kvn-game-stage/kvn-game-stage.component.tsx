@@ -2,14 +2,13 @@ import React, { useRef, useEffect } from 'react';
 import * as PIXI from 'pixi.js';
 import EventManager from '../../events/eventManager';
 import * as Event from '../../events/events';
-import RenderingEngine from '../../engine';
+import * as RenderingEngine from '../../engine';
 
 import './kvn-game-stage.component.scss';
 
 function KvnGameStageComponent() {
   const mainStage = useRef(null);
   const eventManager = EventManager.getInstance();
-  let engine = null;
 
   const cellCount = 7;
   const padding = 20;
@@ -29,15 +28,9 @@ function KvnGameStageComponent() {
 
   useEffect(() => {
     initGameConstants();
-    engine = new RenderingEngine({
-      mainStage,
-      cellCount,
-      cellWidth,
-      gridSize
-    });
-
-    engine.renderGrid();
-    engine.renderBubbles();
+    RenderingEngine.initRenderer(mainStage, cellCount, cellWidth, gridSize);
+    RenderingEngine.renderGrid();
+    RenderingEngine.renderBubbles();
     // return () => {
     //   cleanup;
     // };

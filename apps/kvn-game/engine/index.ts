@@ -6,144 +6,202 @@ const COLOR = {
   BLUE: 0x0000ff
 };
 
-export default class RenderingEngine {
-  mainStage = null;
-  cellCount: number = 0;
-  cellWidth: number = 0;
-  gridSize: number = 0;
-  app: PIXI.Application;
-  gridContainer: PIXI.Container;
-  spriteContainer: PIXI.Container;
-  spriteTextures = new Map<number, PIXI.RenderTexture>();
+/** Rendering parameters */
+let mainStage = null;
+let cellCount: number = 0;
+let cellWidth: number = 0;
+let gridSize: number = 0;
+let app: PIXI.Application = null;
+let gridContainer: PIXI.Container = null;
+let spriteContainer: PIXI.Container = null;
+let spriteTextures = new Map<number, PIXI.RenderTexture>();
 
-  constructor({ mainStage, cellCount, cellWidth, gridSize }) {
-    this.mainStage = mainStage;
-    this.cellCount = cellCount;
-    this.cellWidth = cellWidth;
-    this.gridSize = gridSize;
+/** Game components */
+let sprites: PIXI.Sprite[][];
 
-    this.app = new PIXI.Application({
-      width: mainStage.current.clientWidth,
-      height: mainStage.current.clientHeight,
-      backgroundColor: 0x000000,
-      resolution: 1,
-      antialias: true
-    });
+const initBaseTextures = () => {
+  Object.values(COLOR).forEach(color => {
+    spriteTextures.set(color, createTexture(color));
+  });
+};
 
-    this.initBaseTextures();
-
-    this.mainStage.current.appendChild(this.app.view);
+const initSpriteArray = () => {
+  sprites = [];
+  for (let x = 0; x < cellCount; x++) {
+    sprites[x] = [];
   }
+};
 
-  private addContainer(container: PIXI.Container) {
-    container.x = (this.app.screen.width - this.gridSize) / 2;
-    container.y = (this.app.screen.height - this.gridSize) / 2;
+export const initRenderer = (stage, count, width, size) => {
+  mainStage = stage;
+  cellCount = count;
+  cellWidth = width;
+  gridSize = size;
 
-    this.app.stage.addChild(container);
-  }
+  app = new PIXI.Application({
+    width: mainStage.current.clientWidth,
+    height: mainStage.current.clientHeight,
+    backgroundColor: 0x000000,
+    resolution: 1,
+    antialias: true
+  });
 
-  private createTexture(color: number) {
-    const graphics = new PIXI.Graphics();
-    const radius = (this.cellWidth - 20) / 2;
-    graphics.beginFill(color, 0.7);
-    graphics.moveTo(0, 0);
-    graphics.lineStyle(0);
-    graphics.drawCircle(radius, radius, (this.cellWidth - 20) / 2);
-    graphics.endFill();
+  initBaseTextures();
+  initSpriteArray();
+  mainStage.current.appendChild(app.view);
+};
 
-    const texture = PIXI.RenderTexture.create({
-      width: graphics.width,
-      height: graphics.height
-    });
+const addContainer = (container: PIXI.Container) => {
+  container.x = (app.screen.width - gridSize) / 2;
+  container.y = (app.screen.height - gridSize) / 2;
 
-    this.app.renderer.render(graphics, texture);
+  app.stage.addChild(container);
+};
 
-    return texture;
-  }
+const createTexture = (color: number) => {
+  const graphics = new PIXI.Graphics();
+  const radius = (cellWidth - 20) / 2;
+  graphics.beginFill(color, 0.7);
+  graphics.moveTo(0, 0);
+  graphics.lineStyle(0);
+  graphics.drawCircle(radius, radius, (cellWidth - 20) / 2);
+  graphics.endFill();
 
-  private initBaseTextures() {
-    Object.values(COLOR).forEach(color => {
-      this.spriteTextures.set(color, this.createTexture(color));
-    });
-  }
+  const texture = PIXI.RenderTexture.create({
+    width: graphics.width,
+    height: graphics.height
+  });
 
-  private createSprite(color: number) {
-    return new PIXI.Sprite(this.spriteTextures.get(color));
-  }
+  app.renderer.render(graphics, texture);
 
-  renderBubbles() {
-    const graphicsContainer = new PIXI.Container();
-    const graphics = new PIXI.Graphics();
-    graphicsContainer.addChild(graphics);
+  return texture;
+};
 
-    const maxItems = this.cellCount * this.cellCount;
-    //draw cell boundary vertical lines
-    for (let i = 0; i < maxItems; i++) {
-      const bubble = this.createSprite(COLOR.BLUE);
-      bubble.anchor.set(0.5);
-      bubble.x = (i % this.cellCount) * this.cellWidth + this.cellWidth / 2;
-      bubble.y =
-        Math.floor(i / this.cellWidth) * this.cellWidth +
-        this.cellWidth / 2 +
-        this.cellWidth * Math.floor(i / this.cellCount);
+function onDragStart(event) {
+  this.data = event.data;
+  this.alpha = 0.5;
+  this.dragging = true;
+}
 
-      bubble.interactive = true;
-      bubble.buttonMode = true;
+const getCell = sprite => {
+  const position = sprite.data.getLocalPosition(sprite.parent);
+  const xCell = Math.floor(position.x / cellWidth);
+  const yCell = Math.floor(position.y / cellWidth);
 
-      graphicsContainer.addChild(bubble);
-    }
+  return { xCell, yCell };
+};
 
-    this.spriteContainer = graphicsContainer;
-    this.addContainer(this.spriteContainer);
-  }
+const centerSprite = sprite => {
+  const cell = getCell(sprite);
 
-  public renderGrid() {
-    const graphicsContainer = new PIXI.Container();
-    const graphics = new PIXI.Graphics();
-    graphicsContainer.addChild(graphics);
+  sprite.x = cell.xCell * cellWidth + cellWidth / 2;
+  sprite.y = cell.yCell * cellWidth + cellWidth / 2;
+};
 
-    const internalCellCount = 3;
-    const internalCellWidth = this.cellWidth / internalCellCount;
-    const internalCellTotalCount = this.gridSize / internalCellWidth;
+function onDragEnd() {
+  centerSprite(this);
+  this.alpha = 1;
+  this.dragging = false;
+  this.data = null;
+}
 
-    //draw cell boundary vertical lines
-    for (let i = 0; i < internalCellTotalCount + 1; i++) {
-      let x = (i % (internalCellTotalCount + 1)) * internalCellWidth;
-      let y = this.gridSize;
-
-      if (i % internalCellCount === 0) {
-        graphics.lineStyle(2, 0xffd900, 1);
-      } else {
-        graphics.lineStyle(1, 0xffd900, 0.5);
-      }
-
-      graphics.beginFill(0xff3300);
-      graphics.moveTo(x, 0);
-      graphics.lineTo(x, y + 1);
-      graphics.closePath();
-      graphics.endFill();
-    }
-
-    //draw cell boundary horizontal lines lines
-    for (let i = 0; i < internalCellTotalCount + 1; i++) {
-      let x = -1;
-      let y = (i % (internalCellTotalCount + 1)) * internalCellWidth;
-
-      if (i % internalCellCount === 0) {
-        graphics.lineStyle(2, 0xffd900, 1);
-      } else {
-        graphics.lineStyle(1, 0xffd900, 0.5);
-      }
-
-      graphics.beginFill(0xff3300);
-      graphics.moveTo(x, y);
-      graphics.lineTo(this.gridSize + 1, y);
-      graphics.closePath();
-      graphics.endFill();
-    }
-
-    this.gridContainer = graphicsContainer;
-
-    this.addContainer(this.gridContainer);
+function onDragMove() {
+  if (this.dragging) {
+    const newPosition = this.data.getLocalPosition(this.parent);
+    this.x = newPosition.x;
+    this.y = newPosition.y;
+    console.log(getCell(this));
   }
 }
+
+const createSprite = (color: number) => {
+  const sprite = new PIXI.Sprite(spriteTextures.get(color));
+
+  sprite.interactive = true;
+  sprite.buttonMode = true;
+
+  sprite
+    .on('pointerdown', onDragStart)
+    .on('pointerup', onDragEnd)
+    .on('pointerupoutside', onDragEnd)
+    .on('pointermove', onDragMove);
+
+  return sprite;
+};
+
+export const renderBubbles = () => {
+  const graphicsContainer = new PIXI.Container();
+  const graphics = new PIXI.Graphics();
+
+  graphicsContainer.addChild(graphics);
+
+  const maxItems = cellCount * cellCount;
+  //draw cell boundary vertical lines
+  for (let i = 0; i < maxItems; i++) {
+    const bubble = createSprite(COLOR.BLUE);
+    bubble.anchor.set(0.5);
+
+    const xPos = i % cellCount;
+    const yPos = Math.floor(i / cellCount);
+
+    sprites[xPos][yPos] = bubble;
+
+    bubble.x = xPos * cellWidth + cellWidth / 2;
+    bubble.y = yPos * cellWidth + cellWidth / 2;
+
+    graphicsContainer.addChild(bubble);
+  }
+
+  spriteContainer = graphicsContainer;
+  addContainer(spriteContainer);
+};
+
+export const renderGrid = () => {
+  const graphicsContainer = new PIXI.Container();
+  const graphics = new PIXI.Graphics();
+  graphicsContainer.addChild(graphics);
+
+  const internalCellCount = 3;
+  const internalCellWidth = cellWidth / internalCellCount;
+  const internalCellTotalCount = gridSize / internalCellWidth;
+
+  //draw cell boundary vertical lines
+  for (let i = 0; i < internalCellTotalCount + 1; i++) {
+    let x = (i % (internalCellTotalCount + 1)) * internalCellWidth;
+    let y = gridSize;
+
+    if (i % internalCellCount === 0) {
+      graphics.lineStyle(2, 0xffd900, 1);
+    } else {
+      graphics.lineStyle(1, 0xffd900, 0.5);
+    }
+
+    graphics.beginFill(0xff3300);
+    graphics.moveTo(x, 0);
+    graphics.lineTo(x, y + 1);
+    graphics.closePath();
+    graphics.endFill();
+  }
+
+  //draw cell boundary horizontal lines lines
+  for (let i = 0; i < internalCellTotalCount + 1; i++) {
+    let x = -1;
+    let y = (i % (internalCellTotalCount + 1)) * internalCellWidth;
+
+    if (i % internalCellCount === 0) {
+      graphics.lineStyle(2, 0xffd900, 1);
+    } else {
+      graphics.lineStyle(1, 0xffd900, 0.5);
+    }
+
+    graphics.beginFill(0xff3300);
+    graphics.moveTo(x, y);
+    graphics.lineTo(gridSize + 1, y);
+    graphics.closePath();
+    graphics.endFill();
+  }
+
+  gridContainer = graphicsContainer;
+
+  addContainer(gridContainer);
+};
