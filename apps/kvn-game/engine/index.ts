@@ -77,12 +77,6 @@ const createTexture = (color: number) => {
   return texture;
 };
 
-function onDragStart(event) {
-  this.data = event.data;
-  this.alpha = 0.5;
-  this.dragging = true;
-}
-
 const getCell = sprite => {
   const position = sprite.data.getLocalPosition(sprite.parent);
   const xCell = Math.floor(position.x / cellWidth);
@@ -91,6 +85,17 @@ const getCell = sprite => {
   return { xCell, yCell };
 };
 
+const getRadius = sprite => {
+  return (sprite.texture.width * sprite.scale.x) / 2;
+};
+
+function onDragStart(event) {
+  this.data = event.data;
+  this.initialCellPosition = getCell(this);
+  this.alpha = 0.5;
+  this.dragging = true;
+}
+
 const centerSprite = sprite => {
   const cell = getCell(sprite);
 
@@ -98,8 +103,40 @@ const centerSprite = sprite => {
   sprite.y = cell.yCell * cellWidth + cellWidth / 2;
 };
 
+const repositionSprite = (sprite, cell) => {
+  console.log(cell);
+  sprite.x = cell.xCell * cellWidth + cellWidth / 2;
+  sprite.y = cell.yCell * cellWidth + cellWidth / 2;
+};
+
 function onDragEnd() {
-  centerSprite(this);
+  const cPos = getCell(this);
+
+  if (cPos.xCell < 0 && cPos.yCell >= 0 && cPos.yCell < cellCount) {
+    repositionSprite(this, { xCell: 0, yCell: cPos.yCell });
+  } else if (
+    cPos.xCell >= cellCount &&
+    cPos.yCell >= 0 &&
+    cPos.yCell < cellCount
+  ) {
+    repositionSprite(this, { xCell: cPos.xCell - 1, yCell: cPos.yCell });
+  } else if (cPos.yCell < 0 && cPos.xCell >= 0 && cPos.xCell < cellCount) {
+    repositionSprite(this, { xCell: cPos.xCell, yCell: 0 });
+  } else if (
+    cPos.yCell >= cellCount &&
+    cPos.xCell >= 0 &&
+    cPos.xCell < cellCount
+  ) {
+    repositionSprite(this, { xCell: cPos.xCell, yCell: cellCount - 1 });
+  } else if (cPos.xCell < 0 && cPos.yCell < 0) {
+    repositionSprite(this, { xCell: 0, yCell: 0 });
+  } else if (cPos.xCell >= cellCount && cPos.yCell >= cellCount) {
+    repositionSprite(this, { xCell: cellCount - 1, yCell: cellCount - 1 });
+  } else {
+    centerSprite(this);
+  }
+
+  this.initialCellPosition = null;
   this.alpha = 1;
   this.dragging = false;
   this.data = null;
@@ -110,7 +147,6 @@ function onDragMove() {
     const newPosition = this.data.getLocalPosition(this.parent);
     this.x = newPosition.x;
     this.y = newPosition.y;
-    console.log(getCell(this));
   }
 }
 
