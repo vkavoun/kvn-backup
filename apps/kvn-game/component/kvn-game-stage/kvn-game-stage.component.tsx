@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import * as PIXI from 'pixi.js';
 import EventManager from '../../events/eventManager';
 import * as Event from '../../events/events';
 import * as RenderingEngine from '../../engine';
@@ -15,7 +14,7 @@ function KvnGameStageComponent() {
   let cellWidth = 0;
   let gridSize = 0;
 
-  let app = null;
+  const app = null;
 
   eventManager.addEventListener(Event.RESET, () => {
     console.log('reset event');
@@ -34,7 +33,7 @@ function KvnGameStageComponent() {
     // return () => {
     //   cleanup;
     // };
-  }, [mainStage]);
+  }, [cellWidth, gridSize, initGameConstants, mainStage]);
 
   return <div ref={mainStage} className="kvn-game-stage-component"></div>;
 }

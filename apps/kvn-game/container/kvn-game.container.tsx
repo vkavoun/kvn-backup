@@ -4,14 +4,14 @@ import KvnDevControlsComponent from '../component/kvn-dev-controls/kvn-dev-contr
 import EventManager from '../events/eventManager';
 import * as Event from '../events/events';
 
+import { environment } from '../environments/environment';
+
+import './kvn-game.container.scss';
+
 const KvnGameStageComponent = dynamic(
   import('../component/kvn-game-stage/kvn-game-stage.component'),
   { ssr: false }
 );
-
-import { environment } from '../environments/environment';
-
-import './kvn-game.container.scss';
 
 function KvnGameContainer() {
   const eventManager = EventManager.getInstance();

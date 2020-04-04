@@ -8,13 +8,13 @@ const COLOR = {
 
 /** Rendering parameters */
 let mainStage = null;
-let cellCount: number = 0;
-let cellWidth: number = 0;
-let gridSize: number = 0;
+let cellCount = 0;
+let cellWidth = 0;
+let gridSize = 0;
 let app: PIXI.Application = null;
 let gridContainer: PIXI.Container = null;
 let spriteContainer: PIXI.Container = null;
-let spriteTextures = new Map<number, PIXI.RenderTexture>();
+const spriteTextures = new Map<number, PIXI.RenderTexture>();
 
 /** Game components */
 let sprites: PIXI.Sprite[][];
@@ -203,8 +203,8 @@ export const renderGrid = () => {
 
   //draw cell boundary vertical lines
   for (let i = 0; i < internalCellTotalCount + 1; i++) {
-    let x = (i % (internalCellTotalCount + 1)) * internalCellWidth;
-    let y = gridSize;
+    const x = (i % (internalCellTotalCount + 1)) * internalCellWidth;
+    const y = gridSize;
 
     if (i % internalCellCount === 0) {
       graphics.lineStyle(2, 0xffd900, 1);
@@ -221,8 +221,8 @@ export const renderGrid = () => {
 
   //draw cell boundary horizontal lines lines
   for (let i = 0; i < internalCellTotalCount + 1; i++) {
-    let x = -1;
-    let y = (i % (internalCellTotalCount + 1)) * internalCellWidth;
+    const x = -1;
+    const y = (i % (internalCellTotalCount + 1)) * internalCellWidth;
 
     if (i % internalCellCount === 0) {
       graphics.lineStyle(2, 0xffd900, 1);

@@ -93,6 +93,153 @@
           }
         }
       }
+    },
+    "ui": {
+      "root": "libs/ui",
+      "sourceRoot": "libs/ui/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ui/tsconfig.lib.json",
+              "libs/ui/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/ui/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/ui/jest.config.js",
+            "tsConfig": "libs/ui/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "sandbox": {
+      "root": "apps/sandbox",
+      "sourceRoot": "apps/sandbox",
+      "projectType": "application",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/next:build",
+          "options": {
+            "root": "apps/sandbox",
+            "outputPath": "dist/apps/sandbox"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/sandbox/environments/environment.ts",
+                  "with": "apps/sandbox/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/next:dev-server",
+          "options": {
+            "buildTarget": "sandbox:build",
+            "dev": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "sandbox:build:production",
+              "dev": false
+            }
+          }
+        },
+        "export": {
+          "builder": "@nrwl/next:export",
+          "options": {
+            "buildTarget": "sandbox:build:production"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/sandbox/.eslintrc",
+            "tsConfig": [
+              "apps/sandbox/tsconfig.json",
+              "apps/sandbox/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/sandbox/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/sandbox/jest.config.js",
+            "tsConfig": "apps/sandbox/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "sandbox-e2e": {
+      "root": "apps/sandbox-e2e",
+      "sourceRoot": "apps/sandbox-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/sandbox-e2e/cypress.json",
+            "tsConfig": "apps/sandbox-e2e/tsconfig.e2e.json",
+            "devServerTarget": "sandbox:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "sandbox:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "apps/sandbox-e2e/.eslintrc",
+            "tsConfig": ["apps/sandbox-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/sandbox-e2e/**"]
+          }
+        }
+      }
+    },
+    "graphics": {
+      "root": "libs/graphics",
+      "sourceRoot": "libs/graphics/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/graphics/.eslintrc",
+            "tsConfig": [
+              "libs/graphics/tsconfig.lib.json",
+              "libs/graphics/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/graphics/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/graphics/jest.config.js",
+            "tsConfig": "libs/graphics/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
@@ -111,8 +258,16 @@
     },
     "@nrwl/react": {
       "application": {
+        "style": "scss",
         "linter": "eslint",
         "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
       }
     },
     "@nrwl/next": {

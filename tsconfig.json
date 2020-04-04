@@ -8,14 +8,17 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es6",
     "module": "esnext",
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@kvn/ui": ["libs/ui/src/index.ts"],
+      "@kvn/graphics": ["libs/graphics/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
