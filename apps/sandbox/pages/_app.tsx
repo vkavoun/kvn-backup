@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import { EnhancedAppHeader } from '@kvn/ui';
+import { EnhancedAppHeader } from '../ui';
+//import { EnhancedAppHeader } from '@kvn/ui';
 import * as routes from '../routes';
 import { AppProvider } from '../context';
 import parser from 'ua-parser-js';

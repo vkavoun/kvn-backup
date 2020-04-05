@@ -1,8 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
 
-import './app.scss';
-
 const FresnelShader = {
   uniforms: {
     mRefractionRatio: { value: 1.02 },

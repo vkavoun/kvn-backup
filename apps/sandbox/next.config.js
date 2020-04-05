@@ -1,6 +1,16 @@
 const withSass = require('@zeit/next-sass');
-module.exports = withSass({
-  // Set this to true if you use CSS modules.
-  // See: https://github.com/css-modules/css-modules
-  cssModules: false
-});
+
+const { PHASE_PRODUCTION_BUILD } = require('next/constants');
+
+module.exports = (phase, { defaultConfig = defaultConfig }) => {
+  let config = {
+    cssModules: false
+  };
+
+  if (phase !== PHASE_PRODUCTION_BUILD) {
+    // add css, less, sass, and stylus loaders
+    config = withSass(config);
+  }
+
+  return config;
+};

@@ -143,6 +143,21 @@
             }
           }
         },
+        "build-dev": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/sandbox",
+            "main": "apps/sandbox/main",
+            "tsConfig": "apps/sandbox/tsconfig.json",
+            "assets": ["apps/sandbox/assets"]
+          }
+        },
+        "serve-custom": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "sandbox:build-dev"
+          }
+        },
         "serve": {
           "builder": "@nrwl/next:dev-server",
           "options": {
