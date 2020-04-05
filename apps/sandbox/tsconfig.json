@@ -10,12 +10,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@kvn/ui": ["libs/ui/src/index.ts"],
-      "@kvn/graphics": ["libs/graphics/src/index.ts"]
-    }
+    "isolatedModules": true
   },
   "include": ["**/*.ts", "**/*.tsx", "next-env.d.ts"]
 }

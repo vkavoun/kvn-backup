@@ -20,9 +20,10 @@ function Layout(props: any) {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const { userAgent } = pageProps;
-  const ua = parser(userAgent);
-  const uaData = JSON.parse(JSON.stringify(ua));
+  // const { userAgent } = pageProps;
+  // const ua = parser(userAgent);
+  // const uaData = JSON.parse(JSON.stringify(ua));
+  const uaData = {};
   return (
     <>
       <Head>

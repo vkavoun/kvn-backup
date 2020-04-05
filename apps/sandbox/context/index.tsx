@@ -1,9 +1,9 @@
 import React from 'react';
 
 type Action =
-  | { type: 'set'; payload: Object }
-  | { type: 'update'; payload: Object }
-  | { type: 'refresh'; payload: Object };
+  | { type: 'set'; payload: Record<string, any> }
+  | { type: 'update'; payload: Record<string, any> }
+  | { type: 'refresh'; payload: Record<string, any> };
 
 type Dispatch = (action: Action) => void;
 

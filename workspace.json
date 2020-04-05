@@ -131,16 +131,6 @@
           "options": {
             "root": "apps/sandbox",
             "outputPath": "dist/apps/sandbox"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/sandbox/environments/environment.ts",
-                  "with": "apps/sandbox/environments/environment.prod.ts"
-                }
-              ]
-            }
           }
         },
         "build-dev": {
@@ -148,17 +138,17 @@
           "options": {
             "outputPath": "dist/apps/sandbox",
             "main": "apps/sandbox/main",
-            "tsConfig": "apps/sandbox/tsconfig.json",
-            "assets": ["apps/sandbox/assets"]
+            "tsConfig": "apps/sandbox/tsconfig.app.json",
+            "assets": ["apps/sandbox/public"]
           }
         },
-        "serve-custom": {
+        "serve": {
           "builder": "@nrwl/node:execute",
           "options": {
             "buildTarget": "sandbox:build-dev"
           }
         },
-        "serve": {
+        "serve-dev": {
           "builder": "@nrwl/next:dev-server",
           "options": {
             "buildTarget": "sandbox:build",
@@ -174,7 +164,7 @@
         "export": {
           "builder": "@nrwl/next:export",
           "options": {
-            "buildTarget": "sandbox:build:production"
+            "buildTarget": "sandbox:build"
           }
         },
         "lint": {
@@ -320,5 +310,5 @@
       }
     }
   },
-  "defaultProject": "kvn-game"
+  "defaultProject": "sandbox"
 }
