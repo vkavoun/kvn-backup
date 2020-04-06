@@ -1,66 +1,66 @@
-// import React from 'react';
-// import * as THREE from 'three';
+import React from 'react';
+import * as THREE from 'three';
 
-// const FresnelShader = {
-//   uniforms: {
-//     mRefractionRatio: { value: 1.02 },
-//     mFresnelBias: { value: 0.1 },
-//     mFresnelPower: { value: 2.0 },
-//     mFresnelScale: { value: 1.0 },
-//     tCube: { value: null }
-//   },
+const FresnelShader = {
+  uniforms: {
+    mRefractionRatio: { value: 1.02 },
+    mFresnelBias: { value: 0.1 },
+    mFresnelPower: { value: 2.0 },
+    mFresnelScale: { value: 1.0 },
+    tCube: { value: null }
+  },
 
-//   vertexShader: [
-//     'uniform float mRefractionRatio;',
-//     'uniform float mFresnelBias;',
-//     'uniform float mFresnelScale;',
-//     'uniform float mFresnelPower;',
+  vertexShader: [
+    'uniform float mRefractionRatio;',
+    'uniform float mFresnelBias;',
+    'uniform float mFresnelScale;',
+    'uniform float mFresnelPower;',
 
-//     'letying vec3 vReflect;',
-//     'letying vec3 vRefract[3];',
-//     'letying float vReflectionFactor;',
+    'letying vec3 vReflect;',
+    'letying vec3 vRefract[3];',
+    'letying float vReflectionFactor;',
 
-//     'void main() {',
+    'void main() {',
 
-//     '	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );',
-//     '	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );',
+    '	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );',
+    '	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );',
 
-//     '	vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );',
+    '	vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );',
 
-//     '	vec3 I = worldPosition.xyz - cameraPosition;',
+    '	vec3 I = worldPosition.xyz - cameraPosition;',
 
-//     '	vReflect = reflect( I, worldNormal );',
-//     '	vRefract[0] = refract( normalize( I ), worldNormal, mRefractionRatio );',
-//     '	vRefract[1] = refract( normalize( I ), worldNormal, mRefractionRatio * 0.99 );',
-//     '	vRefract[2] = refract( normalize( I ), worldNormal, mRefractionRatio * 0.98 );',
-//     '	vReflectionFactor = mFresnelBias + mFresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), mFresnelPower );',
+    '	vReflect = reflect( I, worldNormal );',
+    '	vRefract[0] = refract( normalize( I ), worldNormal, mRefractionRatio );',
+    '	vRefract[1] = refract( normalize( I ), worldNormal, mRefractionRatio * 0.99 );',
+    '	vRefract[2] = refract( normalize( I ), worldNormal, mRefractionRatio * 0.98 );',
+    '	vReflectionFactor = mFresnelBias + mFresnelScale * pow( 1.0 + dot( normalize( I ), worldNormal ), mFresnelPower );',
 
-//     '	gl_Position = projectionMatrix * mvPosition;',
+    '	gl_Position = projectionMatrix * mvPosition;',
 
-//     '}'
-//   ].join('\n'),
+    '}'
+  ].join('\n'),
 
-//   fragmentShader: [
-//     'uniform samplerCube tCube;',
+  fragmentShader: [
+    'uniform samplerCube tCube;',
 
-//     'letying vec3 vReflect;',
-//     'letying vec3 vRefract[3];',
-//     'letying float vReflectionFactor;',
+    'letying vec3 vReflect;',
+    'letying vec3 vRefract[3];',
+    'letying float vReflectionFactor;',
 
-//     'void main() {',
+    'void main() {',
 
-//     '	vec4 reflectedColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );',
-//     '	vec4 refractedColor = vec4( 1.0 );',
+    '	vec4 reflectedColor = textureCube( tCube, vec3( -vReflect.x, vReflect.yz ) );',
+    '	vec4 refractedColor = vec4( 1.0 );',
 
-//     '	refractedColor.r = textureCube( tCube, vec3( -vRefract[0].x, vRefract[0].yz ) ).r;',
-//     '	refractedColor.g = textureCube( tCube, vec3( -vRefract[1].x, vRefract[1].yz ) ).g;',
-//     '	refractedColor.b = textureCube( tCube, vec3( -vRefract[2].x, vRefract[2].yz ) ).b;',
+    '	refractedColor.r = textureCube( tCube, vec3( -vRefract[0].x, vRefract[0].yz ) ).r;',
+    '	refractedColor.g = textureCube( tCube, vec3( -vRefract[1].x, vRefract[1].yz ) ).g;',
+    '	refractedColor.b = textureCube( tCube, vec3( -vRefract[2].x, vRefract[2].yz ) ).b;',
 
-//     '	gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );',
+    '	gl_FragColor = mix( refractedColor, reflectedColor, clamp( vReflectionFactor, 0.0, 1.0 ) );',
 
-//     '}'
-//   ].join('\n')
-// };
+    '}'
+  ].join('\n')
+};
 
 // function generateTexture() {
 //   const canvas = document.createElement('canvas');
@@ -82,94 +82,94 @@
 //   exposure: 1
 // };
 
-// export const Three = () => {
-//   let container;
-//   let camera;
-//   let scene;
-//   let renderer;
+export const Three = () => {
+  let container;
+  let camera;
+  let scene;
+  let renderer;
 
-//   const mainRendering = (ref: any) => {
-//     container = document.createElement('div');
-//     ref.appendChild(container);
+  const mainRendering = (ref: any) => {
+    container = document.createElement('div');
+    ref.appendChild(container);
 
-//     renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-//     renderer.setClearColor(0xffffff, 0);
-//     renderer.setPixelRatio(window.devicePixelRatio);
-//     renderer.setSize(window.innerWidth, window.innerHeight);
-//     container.appendChild(renderer.domElement);
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setClearColor(0xffffff, 0);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
 
-//     scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
-//     camera = new THREE.PerspectiveCamera(
-//       60,
-//       window.innerWidth / window.innerHeight,
-//       1,
-//       10000
-//     );
-//     camera.position.z = 2000;
+    camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      1,
+      10000
+    );
+    camera.position.z = 2000;
 
-//     let path = 'assets/cube/Park2/';
-//     let format = '.jpg';
-//     let urls = [
-//       path + 'posx' + format,
-//       path + 'negx' + format,
-//       path + 'posy' + format,
-//       path + 'negy' + format,
-//       path + 'posz' + format,
-//       path + 'negz' + format
-//     ];
+    const path = 'assets/cube/Park2/';
+    const format = '.jpg';
+    const urls = [
+      path + 'posx' + format,
+      path + 'negx' + format,
+      path + 'posy' + format,
+      path + 'negy' + format,
+      path + 'posz' + format,
+      path + 'negz' + format
+    ];
 
-//     let textureCube = new THREE.CubeTextureLoader().load(urls);
+    const textureCube = new THREE.CubeTextureLoader().load(urls);
 
-//     scene = new THREE.Scene();
-//     scene.background = textureCube;
+    scene = new THREE.Scene();
+    scene.background = textureCube;
 
-//     let geometry = new THREE.SphereBufferGeometry(100, 32, 16);
+    const geometry = new THREE.SphereBufferGeometry(100, 32, 16);
 
-//     let shader = FresnelShader;
-//     let uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+    const shader = FresnelShader;
+    const uniforms = THREE.UniformsUtils.clone(shader.uniforms);
 
-//     uniforms['tCube'].value = textureCube;
+    uniforms['tCube'].value = textureCube;
 
-//     let material = new THREE.ShaderMaterial({
-//       uniforms: uniforms,
-//       vertexShader: shader.vertexShader,
-//       fragmentShader: shader.fragmentShader
-//     });
+    const material = new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      vertexShader: shader.vertexShader,
+      fragmentShader: shader.fragmentShader
+    });
 
-//     let mesh = new THREE.Mesh(geometry, material);
-//     mesh.position.x = 0;
-//     mesh.position.y = 0;
-//     mesh.position.z = 0;
-//     mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 3 + 1;
-//     scene.add(mesh);
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = 0;
+    mesh.position.y = 0;
+    mesh.position.z = 0;
+    mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 3 + 1;
+    scene.add(mesh);
 
-//     function animate() {
-//       requestAnimationFrame(animate);
+    function animate() {
+      requestAnimationFrame(animate);
 
-//       render();
-//     }
+      render();
+    }
 
-//     function render() {
-//       let timer = 0.0001 * Date.now();
+    function render() {
+      const timer = 0.0001 * Date.now();
 
-//       mesh.position.x = 500 * Math.cos(timer);
-//       mesh.position.y = 500 * Math.sin(timer + 1 * 1.1);
+      mesh.position.x = 500 * Math.cos(timer);
+      mesh.position.y = 500 * Math.sin(timer + 1 * 1.1);
 
-//       renderer.render(scene, camera);
-//     }
+      renderer.render(scene, camera);
+    }
 
-//     animate();
-//   };
+    animate();
+  };
 
-//   return (
-//     <div className="app">
-//       <header className="flex">
-//         <h1>Welcome to kvn-sandbox!</h1>
-//       </header>
-//       <main ref={ref => mainRendering(ref)}></main>
-//     </div>
-//   );
-// };
+  return (
+    <div className="app">
+      <header className="flex">
+        <h1>Welcome to kvn-sandbox!</h1>
+      </header>
+      <main ref={ref => mainRendering(ref)}></main>
+    </div>
+  );
+};
 
-// export default Three;
+export default Three;

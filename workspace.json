@@ -143,12 +143,6 @@
           }
         },
         "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "sandbox:build-dev"
-          }
-        },
-        "serve-dev": {
           "builder": "@nrwl/next:dev-server",
           "options": {
             "buildTarget": "sandbox:build",

@@ -1,6 +1,5 @@
 import React from 'react';
-//import { BasePage } from '@kvn/ui';
-import { BasePage } from '../ui';
+import { BasePage } from '@kvn/ui';
 
 function ExamplesPage({ isServer }) {
   return (

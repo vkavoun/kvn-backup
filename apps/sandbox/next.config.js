@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // next.config.js
+const withSASS = require('@zeit/next-sass');
 const withOffline = require('next-offline');
-const withSass = require('@zeit/next-sass');
 
 const nextConfig = {
   target: 'serverless',
-  cssModules: false,
   transformManifest: manifest => ['/'].concat(manifest), // add the homepage to the cache
   // Trying to set NODE_ENV=production when running yarn dev causes a build-time error so we
   // turn on the SW in dev mode so that we can actually test it
-  generateInDevMode: true,
+  generateInDevMode: false,
   workboxOpts: {
     swDest: 'static/service-worker.js',
     runtimeCaching: [
@@ -31,4 +31,4 @@ const nextConfig = {
   }
 };
 
-module.exports = withOffline(withSass(nextConfig));
+module.exports = withOffline(withSASS(nextConfig));

@@ -15,7 +15,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@kvn/ui": ["libs/ui/src/index.ts"],
+      "@kvn/graphics": ["libs/graphics/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
