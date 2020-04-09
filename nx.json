@@ -11,25 +11,15 @@
     "nx.json": "*"
   },
   "projects": {
-    "kvn-game": {
-      "tags": []
-    },
-    "kvn-game-e2e": {
-      "tags": [],
-      "implicitDependencies": ["kvn-game"]
-    },
     "ui": {
       "tags": []
     },
-    "sandbox": {
+    "site": {
       "tags": []
     },
-    "sandbox-e2e": {
+    "site-e2e": {
       "tags": [],
-      "implicitDependencies": ["sandbox"]
-    },
-    "graphics": {
-      "tags": []
+      "implicitDependencies": ["site"]
     }
   },
   "tasksRunnerOptions": {
