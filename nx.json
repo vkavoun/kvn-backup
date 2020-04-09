@@ -27,9 +27,6 @@
     "sandbox-e2e": {
       "tags": [],
       "implicitDependencies": ["sandbox"]
-    },
-    "graphics": {
-      "tags": []
     }
   },
   "tasksRunnerOptions": {
