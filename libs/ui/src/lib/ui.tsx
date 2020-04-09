@@ -195,10 +195,9 @@ function AppHeader({ router, navRoutes, hiddenRoutes, deviceInfo }) {
 
 export const EnhancedAppHeader = withRouter(AppHeader);
 
-// tslint:disable-next-line: no-empty-interface
 export interface PageProps {
   title?: string;
-  children?: any;
+  children?: React.ReactNode;
 }
 
 export function BasePage(props: PageProps) {
