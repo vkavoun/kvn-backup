@@ -1,7 +1,7 @@
 {
   "rulesDirectory": ["node_modules/@nrwl/workspace/src/tslint"],
   "linterOptions": {
-    "exclude": ["**/*"]
+    "exclude": ["**/*", "./.history/*"]
   },
   "rules": {
     "arrow-return-shorthand": true,

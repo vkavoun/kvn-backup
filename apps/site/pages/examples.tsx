@@ -1,5 +1,5 @@
-import React from 'react';
 import { BasePage } from '@kvn/ui';
+import React from 'react';
 
 function ExamplesPage({ isServer }) {
   return (
@@ -16,7 +16,6 @@ function ExamplesPage({ isServer }) {
 ExamplesPage.title = 'Examples';
 ExamplesPage.getInitialProps = async ({ req }) => {
   const isServer = !!req;
-  // DISPATCH ACTIONS HERE ONLY WITH `reduxStore.dispatch`
   return { isServer };
 };
 

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // next.config.js
 const withSASS = require('@zeit/next-sass');
-const withWorkers = require('@zeit/next-workers');
 const withOffline = require('next-offline');
 
 const nextConfig = {
@@ -32,4 +31,4 @@ const nextConfig = {
   }
 };
 
-module.exports = withOffline(withWorkers(withSASS(nextConfig)));
+module.exports = withOffline(withSASS(nextConfig));

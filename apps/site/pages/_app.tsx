@@ -1,45 +1,31 @@
-import React from 'react';
-import { AppProps } from 'next/app';
-import Head from 'next/head';
+import { UserAgent } from '@kvn/data';
 import { EnhancedAppHeader } from '@kvn/ui';
+import Head from 'next/head';
+import React from 'react';
+import { AppActionType, AppProvider, useAppDispatch } from '../context/AppContext';
 import * as routes from '../routes';
-import {
-  AppActionType,
-  AppProvider,
-  useAppDispatch
-} from '../context/AppContext';
-import * as parser from 'ua-parser-js';
-
-import { Abstract } from '@kvn/model';
-
 import './_app.scss';
 
-function Layout(props: {
-  payload: Record<string, object>;
-  children: React.ReactNode;
-}) {
+function Layout({ payload, children }) {
   const dispatch = useAppDispatch();
   return (
-    <div
-      ref={() => dispatch({ type: AppActionType.SET, payload: props.payload })}
-    >
-      {props.children}
+    <div ref={() => dispatch({ type: AppActionType.SET, payload })}>
+      {children}
     </div>
   );
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }) {
   const { userAgent } = pageProps;
-  const ua = new parser.UAParser(userAgent);
-  const uaData = JSON.parse(JSON.stringify(ua));
+  const ua = JSON.parse(JSON.stringify(new UserAgent(userAgent)));
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <AppProvider>
-        <Layout payload={uaData}>
-          <EnhancedAppHeader {...routes} deviceInfo={uaData} />
+        <Layout payload={ua}>
+          <EnhancedAppHeader {...routes} deviceInfo={ua} />
           <Component {...pageProps} />
         </Layout>
       </AppProvider>

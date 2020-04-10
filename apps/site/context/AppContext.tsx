@@ -1,5 +1,5 @@
+import { UserAgent } from '@kvn/data';
 import React from 'react';
-
 enum AppActionType {
   SET = 'SET',
   UPDATE = 'UPDATE',
@@ -7,9 +7,9 @@ enum AppActionType {
 }
 
 type Action =
-  | { type: AppActionType.SET; payload: Record<string, object> }
-  | { type: AppActionType.UPDATE; payload: Record<string, object> }
-  | { type: AppActionType.REFRESH; payload: Record<string, object> };
+  | { type: AppActionType.SET; payload: UserAgent }
+  | { type: AppActionType.UPDATE; payload: UserAgent }
+  | { type: AppActionType.REFRESH; payload: UserAgent };
 
 type Dispatch = (action: Action) => void;
 
@@ -17,7 +17,7 @@ type State = {};
 
 type AppProviderProps = { children: React.ReactNode };
 
-const initialState = {};
+const initialState = { userAgent: new UserAgent() };
 
 const AppStateContext = React.createContext<State | undefined>(initialState);
 const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
@@ -25,10 +25,10 @@ const AppDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 function appReducer(state: State, action: Action) {
   switch (action.type) {
     case AppActionType.SET: {
-      return { ...action.payload };
+      return { userAgent: action.payload };
     }
     case AppActionType.UPDATE: {
-      return { ...state, ...action.payload };
+      return { ...state, userAgent: action.payload };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -65,3 +65,4 @@ function useAppDispatch() {
 }
 
 export { AppActionType, AppProvider, useAppState, useAppDispatch };
+

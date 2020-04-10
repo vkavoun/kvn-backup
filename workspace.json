@@ -14,7 +14,7 @@
               "libs/ui/tsconfig.lib.json",
               "libs/ui/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/ui/**"]
+            "exclude": ["**/node_modules/**", "!libs/ui/**","!./history"]
           }
         },
         "test": {
@@ -78,7 +78,7 @@
               "apps/site/tsconfig.json",
               "apps/site/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/site/**"]
+            "exclude": ["**/node_modules/**", "!apps/site/**", "!./history"]
           }
         },
         "test": {
@@ -115,7 +115,7 @@
             "linter": "eslint",
             "config": "apps/site-e2e/.eslintrc",
             "tsConfig": ["apps/site-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/site-e2e/**"]
+            "exclude": ["**/node_modules/**", "!apps/site-e2e/**","!./history"]
           }
         }
       }
@@ -135,7 +135,7 @@
               "libs/data/tsconfig.lib.json",
               "libs/data/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!libs/data/**"]
+            "exclude": ["**/node_modules/**", "!libs/data/**", "!./history"]
           }
         },
         "test": {
