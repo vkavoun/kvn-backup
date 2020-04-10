@@ -10,6 +10,8 @@ import {
 } from '../context/AppContext';
 import * as parser from 'ua-parser-js';
 
+import { Abstract } from '@kvn/model';
+
 import './_app.scss';
 
 function Layout(props: {

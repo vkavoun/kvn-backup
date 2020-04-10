@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@kvn/ui": ["libs/ui/src/index.ts"],
-      "@kvn/graphics": ["libs/graphics/src/index.ts"]
+      "@kvn/data": ["libs/data/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

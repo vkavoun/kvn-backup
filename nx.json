@@ -20,6 +20,9 @@
     "site-e2e": {
       "tags": [],
       "implicitDependencies": ["site"]
+    },
+    "data": {
+      "tags": []
     }
   },
   "tasksRunnerOptions": {

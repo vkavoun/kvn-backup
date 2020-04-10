@@ -3,8 +3,6 @@
 import styled from 'styled-components';
 
 export const Ul = styled.ul`
-  display: flex;
-  flex-direction: row;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -61,7 +59,7 @@ export const A = styled.a<{
     }
   }}
 
-  text-decoration: none;
   padding: 0 1rem;
+  text-decoration: none;
   place-self: center;
 `;

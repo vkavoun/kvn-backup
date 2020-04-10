@@ -1,4 +1,6 @@
-const authRoutes = [
+import { NavNode } from '@kvn/data';
+
+const authRoutes: NavNode[] = [
   {
     title: 'Login',
     href: '/login',
@@ -11,7 +13,7 @@ const authRoutes = [
   }
 ];
 
-export const routes = [
+export const routes: NavNode[] = [
   {
     title: 'Home',
     href: '/',
@@ -35,10 +37,10 @@ export const routes = [
   ...authRoutes
 ];
 
-export const navRoutes = routes.filter((route, index) => {
+export const navRoutes: NavNode[] = routes.filter(route => {
   return route.navHeader;
 });
 
-export const hiddenRoutes = routes.filter((route, index) => {
+export const hiddenRoutes: NavNode[] = routes.filter(route => {
   return !route.navHeader;
 });

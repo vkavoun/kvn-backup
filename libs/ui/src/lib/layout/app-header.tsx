@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { withRouter } from 'next/router';
 import Link from 'next/link';
 import { Ul, Li, A } from '../elements/elements';
-import { ReactComponent as MobileMenuButton } from './hamburger.svg';
+import { ReactComponent as SvgButton } from './hamburger.svg';
 import { device } from '../media/device';
 
 export const Header = styled.header`
@@ -15,8 +15,32 @@ export const Header = styled.header`
   padding: 0 3rem;
   width: 100%;
 
-  @media screen and ${device} {
+  @media screen and ${device.mobileS} {
     padding: 0 1rem;
+  }
+
+  @media screen and ${device.mobileM} {
+    padding: 0 1rem;
+  }
+
+  @media screen and ${device.mobileL} {
+    padding: 0 1rem;
+  }
+
+  @media screen and ${device.tablet} {
+    padding: 0 3rem;
+  }
+
+  @media screen and ${device.tabletL} {
+    padding: 0 3rem;
+  }
+
+  @media screen and ${device.laptop} {
+    padding: 0 3rem;
+  }
+
+  @media screen and ${device.desktop} {
+    padding: 0 3rem;
   }
 `;
 
@@ -29,31 +53,48 @@ export const MainSectionHeader = styled.h2`
   font-weight: 600;
 `;
 
-//grid-template-columns: 10rem auto 20rem;
-export const DesktopNavAside = styled.nav`
-  display: flex;
+export const NavAside = styled.nav`
+  display: grid;
   height: 6.4rem;
   max-height: 6.4rem;
+
+  @media screen and ${device.mobileS} {
+    grid-template-columns: 6rem 1fr 14rem;
+  }
+
+  @media screen and ${device.mobileM} {
+    grid-template-columns: 6rem 1fr 14rem;
+  }
+
+  @media screen and ${device.mobileL} {
+    grid-template-columns: 6rem 1fr 14rem;
+  }
+
+  @media screen and ${device.tablet} {
+    grid-template-columns: 10rem 1fr 20rem;
+  }
+
+  @media screen and ${device.laptop} {
+    grid-template-columns: 10rem 1fr 20rem;
+  }
 `;
 
 export const LogoWrapper = styled.div`
-  align-self: center;
+  display: grid;
   font-size: 2.8rem;
   font-weight: 200;
-  width: 10rem;
 `;
 
 export const LogoText = styled.a`
   color: #111;
-  display: block;
-  text-align: center;
+  place-self: center start;
   text-decoration: none;
 `;
 
 const LoginContainer = styled.div`
-  display: grid;
-  grid-template-columns: 10rem 10rem;
-  width: 20rem;
+  display: flex;
+  grid-column: 3 / 4;
+  place-self: center end;
 `;
 
 function NavLoginContainer({ hiddenRoutes }) {
@@ -71,15 +112,38 @@ function NavLoginContainer({ hiddenRoutes }) {
   );
 }
 
-export const MobileNavAside = styled.nav`
-  display: grid;
-  grid-template-columns: 6rem auto 20rem;
-  height: 6.4rem;
-  max-height: 6.4rem;
+const NavList = styled(Ul)`
+  grid-column-start: 2;
+  display: flex;
+  flex-direction: row;
+
+  @media screen and ${device.mobileS} {
+    display: none;
+  }
+
+  @media screen and ${device.mobileM} {
+    display: none;
+  }
+
+  @media screen and ${device.mobileL} {
+    display: none;
+  }
 `;
 
-const NavList = styled(Ul)`
-  padding: 0 0 0 5rem;
+const MenuButton = styled.div`
+  display: none;
+
+  @media screen and ${device.mobileS} {
+    display: grid;
+  }
+
+  @media screen and ${device.mobileM} {
+    display: grid;
+  }
+
+  @media screen and ${device.mobileL} {
+    display: grid;
+  }
 `;
 
 export function AppHeader({ router, navRoutes, hiddenRoutes, deviceInfo }) {
@@ -88,47 +152,35 @@ export function AppHeader({ router, navRoutes, hiddenRoutes, deviceInfo }) {
   const isMobile = type === 'mobile';
   return (
     <>
-      {!isMobile && (
-        <Header>
-          <DesktopNavAside>
-            <LogoWrapper>
-              <Link href="/" replace>
-                <LogoText href="/">kvn</LogoText>
-              </Link>
-            </LogoWrapper>
-            <NavList>
-              {navRoutes.map((route, index) => {
-                return (
-                  <Li key={`li-${route.href}-${index}`}>
-                    <Link href={route.href} replace>
-                      <A
-                        href={route.href}
-                        selected={router.asPath === route.href}
-                      >
-                        {route.title}
-                      </A>
-                    </Link>
-                  </Li>
-                );
-              })}
-            </NavList>
-            <NavLoginContainer hiddenRoutes={hiddenRoutes} />
-          </DesktopNavAside>
-        </Header>
-      )}
-      {isMobile && (
-        <MobileHeader>
-          <MobileNavAside>
-            <MobileMenuButton />
-            <LogoWrapper>
-              <Link href="/" replace>
-                <LogoText href="/">kvn</LogoText>
-              </Link>
-            </LogoWrapper>
-            <NavLoginContainer hiddenRoutes={hiddenRoutes} />
-          </MobileNavAside>
-        </MobileHeader>
-      )}
+      <Header>
+        <NavAside>
+          <MenuButton>
+            <SvgButton />
+          </MenuButton>
+          <LogoWrapper>
+            <Link href="/" replace>
+              <LogoText href="/">kvn</LogoText>
+            </Link>
+          </LogoWrapper>
+          <NavList>
+            {navRoutes.map((route, index) => {
+              return (
+                <Li key={`li-${route.href}-${index}`}>
+                  <Link href={route.href} replace>
+                    <A
+                      href={route.href}
+                      selected={router.asPath === route.href}
+                    >
+                      {route.title}
+                    </A>
+                  </Link>
+                </Li>
+              );
+            })}
+          </NavList>
+          <NavLoginContainer hiddenRoutes={hiddenRoutes} />
+        </NavAside>
+      </Header>
     </>
   );
 }
